@@ -9,6 +9,11 @@ var config = {
   banner: false,
   backgroundColor: '#1976d2',
   scene: [
+    ScenePrecarga,
+    ScenePrincipal,
+    HUD_InfoRecursos,
+    HUD_InfoMaquinaExtractor,
+    HUD_InfoMaquinaCasaInventos
   ],
 }
 

@@ -1,0 +1,21 @@
+{
+  "frames": [
+    {
+      "filename": "menuEdificios",
+      "frame": {"x": 0, "y": 0, "w": 192, "h": 48}
+    },
+    {
+      "filename": "casillaEdificio",
+      "frame": {"x": 0, "y": 48, "w": 26, "h": 26}
+    },
+    {
+      "filename": "hudInfoPeque",
+      "frame": {"x": 0, "y": 74, "w": 192, "h": 17}
+    }
+  ],
+  "meta": {
+    "image": "hud.png",
+    "size": {"w": 300, "h": 300},
+    "scale": 1
+  }
+}
