@@ -1,0 +1,47 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  font-family: "Verdana";
+  text-align: center;
+
+  background: linear-gradient(0deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), linear-gradient(90deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), linear-gradient(0deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), linear-gradient(90deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), rgb(34, 102, 153);
+  background-position: 0 2px, -40px 0, 0 2px, -40px 0;
+  background-origin: padding-box;
+  background-clip: border-box;
+  background-size: 200px 200px, 200px 200px, 40px 40px, 40px 40px;
+  background-repeat: repeat;
+}
+h1 {
+  font-size: 50px;
+  margin: 5px;
+  text-align: center;
+  letter-spacing: 2px;
+  color: white;
+  text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+}
+#juegoDiv {
+  margin: 0 auto;
+  border: 10px solid white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px black;
+  width: fit-content;
+  height: fit-content;
+  background: white;
+}
+canvas {
+  height: 100%;
+}
+button {
+  margin: 10px;
+  background: #226699;
+  border: 5px solid white;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  padding: 10px;
+  width: 325px;
+  cursor: pointer;
+}
+button:hover {
+  background: #65a7d8;
+}

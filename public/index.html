@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>TechGrow</title>
+    <link rel="stylesheet" href="/css/master.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/phaser.min.js"></script>
+  </head>
+  <body>
+    <h1>TechGrow</h1>
+    <div id="juegoDiv"></div>
+    <button onclick="pantallaCompleta()">PANTALLA COMPLETA</button>
+
+    <script src="js/juego.js"></script>
+
+    <script>
+    function pantallaCompleta() {
+      var elem = document.getElementsByTagName('canvas')[0];
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    }
+    </script>
+  </body>
+</html>
