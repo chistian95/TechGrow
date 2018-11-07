@@ -94,31 +94,31 @@ class ScenePrincipal extends Phaser.Scene {
       }
     }
 
-    this.crearMaquina(-1, 0, 'casa');
-    this.crearMaquina(5, -1, 'picaPiedra');
-    this.crearMaquina(4, 0, 'picaPiedra');
-    this.crearMaquina(-2, 0, 'hornoPiedra');
-    this.crearMaquina(-1, -5, 'taladoraBasica');
-    this.crearMaquina(-6, -1, 'taladoraBasica');
-    this.crearMaquina(1, 7, 'taladoraBasica');
+    new Casa(-1, 0, this);
+    new PicaPiedra(5, -1, this);
+    new PicaPiedra(4, 0, this);
+    new HornoPiedra(-2, 0, this);
+    new TaladoraBasica(-1, -5, this);
+    new TaladoraBasica(-6, -1, this);
+    new TaladoraBasica(1, 7, this);
 
-    this.crearMaquina(0, 7, 'paloTransporte');
-    this.crearMaquina(0, 1, 'paloTransporte');
-    this.crearMaquina(4, -1, 'paloTransporte');
-    this.crearMaquina(-1, -4, 'paloTransporte');
-    this.crearMaquina(-1, -1, 'paloTransporte');
-    this.crearMaquina(-5, -1, 'paloTransporte');
+    new PaloTransporte(0, 7, this);
+    new PaloTransporte(0, 1, this);
+    new PaloTransporte(4, -1, this);
+    new PaloTransporte(-1, -4, this);
+    new PaloTransporte(-1, -1, this);
+    new PaloTransporte(-5, -1, this);
     for(var i=-3; i<-1; i++) {
-      this.crearMaquina(-1, i, 'correaTransporte', 'vertical');
+      new CorreaTransporte(-1, i, this, 'vertical');
     }
     for(var i=-4; i<-1; i++) {
-      this.crearMaquina(i, -1, 'correaTransporte', 'horizontal');
+      new CorreaTransporte(i, -1, this, 'horizontal');
     }
     for(var i=0; i<4; i++) {
-      this.crearMaquina(i, -1, 'correaTransporte', 'horizontal');
+      new CorreaTransporte(i, -1, this, 'horizontal');
     }
     for(var i=2; i<7; i++) {
-      this.crearMaquina(0, i, 'correaTransporte', 'vertical');
+      new CorreaTransporte(0, i, this, 'vertical');
     }
   }
 
