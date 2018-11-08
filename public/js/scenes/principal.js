@@ -190,7 +190,6 @@ class ScenePrincipal extends Phaser.Scene {
       } else if(e.deltaY > 0 && zoom > 1) {
         zoom -= 0.4;
       }
-      zoom = zoom.toFixed(2);
       self.cameras.main.setZoom(zoom);
     });
   }
