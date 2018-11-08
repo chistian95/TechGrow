@@ -43,6 +43,7 @@ class ScenePrincipal extends Phaser.Scene {
       duration: 500
     });
 
+    this.input.addPointer(1);
     this.input.setTopOnly(true);
     this.input.on('gameobjectover', function (pointer, gameObject) {
       if(gameObject.data && gameObject.data.get('maquina')) {
@@ -72,14 +73,47 @@ class ScenePrincipal extends Phaser.Scene {
   update(time, delta) {
     this.controls.update(delta);
 
-    if(this.game.input.activePointer.isDown) {
-      if(this.game.origDragPoint) {
-        this.cameras.main.scrollX += (this.game.origDragPoint.x - this.game.input.activePointer.position.x)*0.5;
-        this.cameras.main.scrollY += (this.game.origDragPoint.y - this.game.input.activePointer.position.y)*0.5;
+    this.controlesMovil();
+  }
+
+  controlesMovil() {
+    if(this.input.pointer1.isDown && this.input.pointer2.isDown) {
+      if(this.origDragZoomPoints) {
+        var zoom = this.cameras.main.zoom;
+        var punteroAct1 = this.input.pointer1.position;
+        var punteroAct2 = this.input.pointer2.position;
+        var puntero1 = this.origDragZoomPoints[0];
+        var puntero2 = this.origDragZoomPoints[1];
+
+        if(punteroAct1.x != puntero1.x && punteroAct1.y != puntero1.y && punteroAct2.x != puntero2.x && punteroAct2.y != puntero2.y) {
+          var distancia1 = Math.sqrt(Math.pow(puntero1.x - puntero2.x, 2) + Math.pow(puntero1.y - puntero2.y, 2));
+          var distancia2 = Math.sqrt(Math.pow(punteroAct1.x - punteroAct2.x, 2) + Math.pow(punteroAct1.y - punteroAct2.y, 2));
+
+          if(distancia1 < distancia2 && zoom < 4) {
+            zoom += 0.2;
+          } else if(distancia2 < distancia1 && zoom > 1) {
+            zoom -= 0.2;
+          }
+
+          this.cameras.main.setZoom(zoom);
+        }
       }
-      this.game.origDragPoint = this.game.input.activePointer.position.clone();
+      this.origDragZoomPoints = [this.input.pointer1.position.clone(), this.input.pointer2.position.clone()];
+
+      this.origDragPoint = null;
+      return;
+    }  else {
+      this.origDragZoomPoints = null;
+    }
+
+    if(this.input.activePointer.isDown) {
+      if(this.origDragPoint) {
+        this.cameras.main.scrollX += (this.origDragPoint.x - this.input.activePointer.position.x)*0.5;
+        this.cameras.main.scrollY += (this.origDragPoint.y - this.input.activePointer.position.y)*0.5;
+      }
+      this.origDragPoint = this.input.activePointer.position.clone();
     } else {
-      this.game.origDragPoint = null;
+      this.origDragPoint = null;
     }
   }
 
@@ -152,10 +186,12 @@ class ScenePrincipal extends Phaser.Scene {
     window.addEventListener('wheel', function(e) {
       var zoom = self.cameras.main.zoom
       if(e.deltaY < 0 && zoom < 4) {
-        self.cameras.main.setZoom(zoom += 0.2);
+        zoom += 0.4;
       } else if(e.deltaY > 0 && zoom > 1) {
-        self.cameras.main.setZoom(zoom -= 0.2);
+        zoom -= 0.4;
       }
+      zoom = zoom.toFixed(2);
+      self.cameras.main.setZoom(zoom);
     });
   }
 
