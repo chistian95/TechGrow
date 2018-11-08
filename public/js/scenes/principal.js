@@ -71,6 +71,16 @@ class ScenePrincipal extends Phaser.Scene {
 
   update(time, delta) {
     this.controls.update(delta);
+
+    if(this.game.input.activePointer.isDown) {
+      if(this.game.origDragPoint) {
+        this.cameras.main.scrollX += (this.game.origDragPoint.x - this.game.input.activePointer.position.x)*0.5;
+        this.cameras.main.scrollY += (this.game.origDragPoint.y - this.game.input.activePointer.position.y)*0.5;
+      }
+      this.game.origDragPoint = this.game.input.activePointer.position.clone();
+    } else {
+      this.game.origDragPoint = null;
+    }
   }
 
   pintarMundo() {
@@ -142,9 +152,9 @@ class ScenePrincipal extends Phaser.Scene {
     window.addEventListener('wheel', function(e) {
       var zoom = self.cameras.main.zoom
       if(e.deltaY < 0 && zoom < 4) {
-        self.cameras.main.setZoom(zoom += 0.1);
-      } else if(e.deltaY > 0 && zoom > 0.5) {
-        self.cameras.main.setZoom(zoom -= 0.1);
+        self.cameras.main.setZoom(zoom += 0.2);
+      } else if(e.deltaY > 0 && zoom > 1) {
+        self.cameras.main.setZoom(zoom -= 0.2);
       }
     });
   }
