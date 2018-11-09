@@ -11,8 +11,6 @@ class CorreaTransporte extends Maquina {
     this.tipo = 'correaTransporte';
     this.subtipo = 'transporte';
     this.velocidad = 1000;
-    this.transportando = false;
-    this.transporteListo = false;
     this.orientacion = orientacion;
 
     if(this.orientacion == 'horizontal') {
@@ -40,43 +38,5 @@ class CorreaTransporte extends Maquina {
     }
 
     this.postInit();
-  }
-
-  tickTransporte() {
-    var scene = this.scene;
-    var maquina = this;
-
-    var coords = maquina.coords[0];
-    if(maquina.orientacion == 'horizontal') {
-      var maquinas = [];
-      if(this.checkTransportarRecursoMaquina(scene.tilesMundo[(coords.x-1)+","+coords.y])) {
-        maquinas.push('left');
-      }
-      if(this.checkTransportarRecursoMaquina(scene.tilesMundo[(coords.x+1)+","+coords.y])) {
-        maquinas.push('right');
-      }
-
-      var dir = maquinas[Math.floor(Math.random() * maquinas.length)];
-      if(dir == 'left') {
-        this.transportarRecursoMaquina(scene.tilesMundo[(coords.x-1)+","+coords.y]);
-      } else if(dir == 'right') {
-        this.transportarRecursoMaquina( scene.tilesMundo[(coords.x+1)+","+coords.y]);
-      }
-    } else {
-      var maquinas = [];
-      if(this.checkTransportarRecursoMaquina( scene.tilesMundo[coords.x+","+(coords.y-1)])) {
-        maquinas.push('up');
-      }
-      if(this.checkTransportarRecursoMaquina( scene.tilesMundo[coords.x+","+(coords.y+1)])) {
-        maquinas.push('down');
-      }
-
-      var dir = maquinas[Math.floor(Math.random() * maquinas.length)];
-      if(dir == 'up') {
-        this.transportarRecursoMaquina(scene.tilesMundo[coords.x+","+(coords.y-1)]);
-      } else if(dir == 'down') {
-        this.transportarRecursoMaquina(scene.tilesMundo[coords.x+","+(coords.y+1)]);
-      }
-    }
   }
 }
