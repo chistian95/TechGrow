@@ -5,7 +5,7 @@ var io = require('socket.io').listen(server);
 
 io.on('connection', function(socket) {
   console.log(`Nuevo usuario: ${socket.id}`);
-  
+
   socket.on('disconnect', function() {
     console.log(`Usuario desconectado: ${socket.id}`);
   });
@@ -17,6 +17,6 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-server.listen(8081, function() {
+server.listen(8082, function() {
   console.log(`Escuchando en ${server.address().port}`);
 });

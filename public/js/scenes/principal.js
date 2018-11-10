@@ -138,6 +138,8 @@ class ScenePrincipal extends Phaser.Scene {
     new TaladoraBasica(-6, -1, this);
     new TaladoraBasica(1, 7, this);
 
+    PaloTransporte.crearTransporte([0,7], [0,1], this);
+    /*
     new PaloTransporte(0, 7, this);
     new PaloTransporte(0, 1, this);
     new PaloTransporte(4, -1, this);
@@ -156,6 +158,7 @@ class ScenePrincipal extends Phaser.Scene {
     for(var i=2; i<7; i++) {
       new CorreaTransporte(0, i, this, 'vertical');
     }
+    */
   }
 
   crearCamara() {
