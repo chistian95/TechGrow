@@ -200,10 +200,5 @@
       "filename": "hierro_2",
       "frame": {"x": 384, "y": 0, "w": 32, "h": 32}
     }
-  ],
-  "meta": {
-    "image": "terreno.png",
-    "size": {"w": 1024, "h": 1024},
-    "scale": 4
-  }
+  ]
 }

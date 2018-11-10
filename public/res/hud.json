@@ -11,11 +11,22 @@
     {
       "filename": "hudInfoPeque",
       "frame": {"x": 0, "y": 74, "w": 192, "h": 17}
+    },
+    {
+      "filename": "hudInputs",
+      "frame": {"x": 0, "y": 91, "w": 49, "h": 49}
+    },
+    {
+      "filename": "inputOff",
+      "frame": {"x": 49, "y": 91, "w": 5, "h": 5}
+    },
+    {
+      "filename": "inputFuera",
+      "frame": {"x": 49, "y": 96, "w": 5, "h": 5}
+    },
+    {
+      "filename": "inputDentro",
+      "frame": {"x": 49, "y": 101, "w": 5, "h": 5}
     }
-  ],
-  "meta": {
-    "image": "hud.png",
-    "size": {"w": 300, "h": 300},
-    "scale": 1
-  }
+  ]
 }

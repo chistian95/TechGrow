@@ -12,9 +12,11 @@ class ScenePrecarga extends Phaser.Scene {
 
   create() {
     this.scene.launch('principal');
+
     this.scene.launch('hud_infoRecursos');
     this.scene.launch('hud_infoMaquinaExtractor');
     this.scene.launch('hud_infoMaquinaCasaInventos');
+    this.scene.launch('hud_infoPaloTransporte');
 
     this.crearAnimaciones();
   }

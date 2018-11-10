@@ -13,7 +13,8 @@ var config = {
     ScenePrincipal,
     HUD_InfoRecursos,
     HUD_InfoMaquinaExtractor,
-    HUD_InfoMaquinaCasaInventos
+    HUD_InfoMaquinaCasaInventos,
+    HUD_InfoPaloTransporte
   ],
 }
 

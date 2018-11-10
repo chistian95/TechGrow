@@ -51,13 +51,6 @@ class ScenePrincipal extends Phaser.Scene {
       } else {
         selector.setVisible(true);
         selector.setPosition(gameObject.x, gameObject.y);
-
-        var coordX = gameObject.x / 32;
-        var coordY = gameObject.y / 32;
-        var tile = self.tilesMundo[coordX+","+coordY];
-        var texto = "F: "+tile.fondo.tipo+" | R: "+tile.recurso.tipo+" | C: "+tile.x+","+tile.y;
-
-        self.registry.set('casillaSeleccionada', texto);
       }
     });
     this.input.on('gameobjectout', function (pointer, gameObject) {
@@ -65,7 +58,6 @@ class ScenePrincipal extends Phaser.Scene {
         gameObject.clearTint();
       } else {
         selector.setVisible(false);
-        self.registry.set('casillaSeleccionada', "");
       }
     });
   }
