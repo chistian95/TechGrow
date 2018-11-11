@@ -25,6 +25,7 @@ class PaloTransporte extends Maquina {
 
   onTick() {
     var dirs = _.shuffle([0,1,2,3]);
+
     for(var i=0; i<dirs.length; i++) {
       var dir = dirs[i];
       if(this.inputs[dir] == 2 && this.cogerItem(dir)) {
@@ -43,13 +44,13 @@ class PaloTransporte extends Maquina {
 
       if(enlace.coords[0].y == this.coords[0].y) { //horizontal
         if(enlace.coords[0].x < this.coords[0].x) { //oeste
-          if(this.inputs[1] == 1 && enlace.inputs[3] == 2) {
+          if(this.inputs[3] == 1 && enlace.inputs[1] == 2) {
             enlace.item = this.item;
             this.item = false;
             return;
           }
         } else { //este
-          if(this.inputs[3] == 1 && enlace.inputs[1] == 2) {
+          if(this.inputs[1] == 1 && enlace.inputs[3] == 2) {
             enlace.item = this.item;
             this.item = false;
             return;
@@ -117,7 +118,7 @@ class PaloTransporte extends Maquina {
     if(!this.item) {
       return false;
     }
-    console.log("a")
+
     var maquina;
     var x = this.coords[0].x;
     var y = this.coords[0].y;
@@ -254,14 +255,14 @@ class PaloTransporte extends Maquina {
         p1 = c1;
         p2 = c2;
 
-        palo1.inputs[3] = 1;
-        palo2.inputs[1] = 2;
+        palo1.inputs[1] = 1;
+        palo2.inputs[3] = 2;
       } else { //oeste
         p1 = c2;
         p2 = c1;
 
-        palo1.inputs[1] = 1;
-        palo2.inputs[3] = 2;
+        palo1.inputs[3] = 1;
+        palo2.inputs[1] = 2;
       }
 
       for(var x=p1[0]+1; x<p2[0]; x++) {

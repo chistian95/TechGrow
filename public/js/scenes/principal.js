@@ -139,6 +139,7 @@ class ScenePrincipal extends Phaser.Scene {
     new TaladoraBasica(1, 7, this);
 
     PaloTransporte.crearTransporte([0,7], [0,1], this);
+    PaloTransporte.crearTransporte([4,-1],[-1,-1], this);
     /*
     new PaloTransporte(0, 7, this);
     new PaloTransporte(0, 1, this);
