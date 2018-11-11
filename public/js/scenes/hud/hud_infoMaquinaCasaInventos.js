@@ -44,8 +44,8 @@ class HUD_InfoMaquinaCasaInventos extends Phaser.Scene {
     }
 
     var txtInv = "";
-    for(var i in this.maquina.inventarioEntrada) {
-      txtInv += RECURSO[i].nombre + ": " + this.maquina.inventarioEntrada[i] + " ";
+    for(var i in this.maquina.inventario) {
+      txtInv += RECURSO[i].nombre + ": " + this.maquina.inventario[i] + " ";
     }
     this.txtInventario.setText(txtInv);
   }

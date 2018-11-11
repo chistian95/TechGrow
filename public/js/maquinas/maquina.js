@@ -4,12 +4,11 @@ class Maquina {
     this.coords = [{x: x, y: y}];
     this.inventario = {};
     this.invAcept = [];
-    this.subtipo = 'generico';
     this.interfaz = 'hud_infoMaquinaGenerico';
     this.velocidad = 1000;
     this.eficiencia = 1;
-    this.nombre = '';
     this.scene = scene;
+    this.inputs = [2,2,2,2];
 
     scene.tilesMundo[x+","+y].maquina = this;
   }

@@ -10,10 +10,160 @@ class PaloTransporte extends Maquina {
     this.invAcept = ['TODO'];
     this.inputs = [0,0,0,0];
     this.enlaces = [];
+    this.activa = false;
+    this.item = false;
 
     this.postInit();
-
     this.ajustarInputs();
+  }
+
+  postInit() {
+    super.postInit();
+
+    this.scene.time.addEvent({delay: this.velocidad, callback: this.onTick, callbackScope: this, loop: true});
+  }
+
+  onTick() {
+    var dirs = _.shuffle([0,1,2,3]);
+    for(var i=0; i<dirs.length; i++) {
+      var dir = dirs[i];
+      if(this.inputs[dir] == 2 && this.cogerItem(dir)) {
+        return;
+      } else if(this.inputs[dir] == 1 && this.enviarItem(dir)) {
+        return;
+      }
+    }
+
+    var enlaces = _.shuffle(this.enlaces);
+    for(var i=0; i<enlaces.length; i++) {
+      var enlace = enlaces[i];
+      if(enlace.item) {
+        continue;
+      }
+
+      if(enlace.coords[0].y == this.coords[0].y) { //horizontal
+        if(enlace.coords[0].x < this.coords[0].x) { //oeste
+          if(this.inputs[1] == 1 && enlace.inputs[3] == 2) {
+            enlace.item = this.item;
+            this.item = false;
+            return;
+          }
+        } else { //este
+          if(this.inputs[3] == 1 && enlace.inputs[1] == 2) {
+            enlace.item = this.item;
+            this.item = false;
+            return;
+          }
+        }
+      } else if(enlace.coords[0].x == this.coords[0].x) { //vertical
+        if(enlace.coords[0].y < this.coords[0].y) { //sur
+          if(this.inputs[0] == 1 && enlace.inputs[2] == 2) {
+            enlace.item = this.item;
+            this.item = false;
+            return;
+          }
+        } else { //norte
+          if(this.inputs[2] == 1 && enlace.inputs[0] == 2) {
+            enlace.item = this.item;
+            this.item = false;
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  cogerItem(dir) {
+    if(this.item) {
+      return false;
+    }
+
+    var maquina;
+    var x = this.coords[0].x;
+    var y = this.coords[0].y;
+    if(dir == 0) {
+      maquina = this.scene.tilesMundo[x+","+(y-1)].maquina;
+    } else if(dir == 1) {
+      maquina = this.scene.tilesMundo[(x+1)+","+y].maquina;
+    } else if(dir == 2) {
+      maquina = this.scene.tilesMundo[x+","+(y+1)].maquina;
+    } else if(dir == 3) {
+      maquina = this.scene.tilesMundo[(x-1)+","+y].maquina;
+    }
+
+    if(!maquina || _.isEmpty(maquina)) {
+      return false;
+    }
+
+    var item;
+    for(var i in maquina.inventario) {
+      if(maquina.inventario[i] > 0) {
+        item = i;
+        maquina.inventario[i]--;
+        break;
+      }
+    }
+
+    if(!item) {
+      return false;
+    }
+
+    this.item = item;
+
+    return true;
+  }
+
+  enviarItem(dir) {
+    if(!this.item) {
+      return false;
+    }
+    console.log("a")
+    var maquina;
+    var x = this.coords[0].x;
+    var y = this.coords[0].y;
+    if(dir == 0) {
+      maquina = this.scene.tilesMundo[x+","+(y-1)].maquina;
+    } else if(dir == 1) {
+      maquina = this.scene.tilesMundo[(x+1)+","+y].maquina;
+    } else if(dir == 2) {
+      maquina = this.scene.tilesMundo[x+","+(y+1)].maquina;
+    } else if(dir == 3) {
+      maquina = this.scene.tilesMundo[(x-1)+","+y].maquina;
+    }
+
+    if(!maquina || _.isEmpty(maquina)) {
+      return false;
+    }
+
+    if(!maquina.invAcept.includes(this.item)) {
+      return false;
+    }
+
+    if(maquina.tipo == 'paloTransporte') {
+      if(maquina.item) {
+        return false;
+      }
+
+      maquina.item = this.item;
+      this.item = false;
+      return true;
+    }
+
+    if(!maquina.inventario[this.item]) {
+      maquina.inventario[this.item] = 0;
+    }
+    maquina.inventario[this.item]++;
+    this.item = false;
+
+    return true;
+  }
+
+  enviarItemTransporte(dir, maquina) {
+    if(maquina.tipo == 'paloTransporte') {
+
+    }
+
+    return false;
   }
 
   ajustarInputs() {
@@ -81,12 +231,18 @@ class PaloTransporte extends Maquina {
 
     if(c1[0] == c2[0]) { //vertical
       var p1, p2;
-      if(c1[1] < c2[1]) {
+      if(c1[1] < c2[1]) { //norte
         p1 = c1;
         p2 = c2;
-      } else {
+
+        palo1.inputs[2] = 1;
+        palo2.inputs[0] = 2;
+      } else { //sur
         p1 = c2;
         p2 = c1;
+
+        palo1.inputs[0] = 1;
+        palo2.inputs[2] = 2;
       }
 
       for(var y=p1[1]+1; y<p2[1]; y++) {
@@ -94,12 +250,18 @@ class PaloTransporte extends Maquina {
       }
     } else { //horizontal
       var p1, p2;
-      if(c1[0] < c2[0]) {
+      if(c1[0] < c2[0]) { //este
         p1 = c1;
         p2 = c2;
-      } else {
+
+        palo1.inputs[3] = 1;
+        palo2.inputs[1] = 2;
+      } else { //oeste
         p1 = c2;
         p2 = c1;
+
+        palo1.inputs[1] = 1;
+        palo2.inputs[3] = 2;
       }
 
       for(var x=p1[0]+1; x<p2[0]; x++) {
@@ -107,8 +269,8 @@ class PaloTransporte extends Maquina {
       }
     }
 
-    palo1.ajustarInputs();
-    palo2.ajustarInputs();
+    palo1.activa = true;
+    palo2.activa = true;
   }
 
   static checkCreacion(c1, c2, scene) {

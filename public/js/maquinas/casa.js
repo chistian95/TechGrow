@@ -9,6 +9,9 @@ class Casa extends Maquina {
     this.tipo = 'casa';
     this.subtipo = 'casa';
     this.interfaz = 'hud_infoMaquinaCasaInventos';
+    
+    this.invAcept.push("piedra");
+    this.invAcept.push("madera");
 
     this.postInit();
   }
