@@ -29,11 +29,11 @@ class Casa extends Maquina {
 
     for(var c in this.coords) {
       var coord = this.coords[c];
-      var dirs = _.shuffle([0,1,2,3]);
+      var dirs = [0,1,2,3];
       for(var d in dirs) {
         var dir = dirs[d];
-        if(coord.inputs[dir] == INPUT.In && this.extraerItem(coord, dir)) {
-          return;
+        if(coord.inputs[dir] == INPUT.In) {
+           this.extraerItem(coord, dir);
         }
       }
     }

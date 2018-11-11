@@ -32,7 +32,7 @@ class Maquina {
     return y * 32 - 16;
   }
 
-  extraerItem(coord, dir, destino=this) {
+  extraerItem(coord, dir, destino=this, recorrido=[]) {
     var maquina;
     if(dir == 0) {
       maquina = this.scene.tilesMundo[coord.x+","+(coord.y-1)].maquina;
@@ -60,18 +60,26 @@ class Maquina {
       return false;
     }
 
-    if(maquina.darItem(destino)) {
+    if(maquina.darItem(destino, recorrido)) {
       return true;
     }
 
     return false;
   }
 
-  darItem(target) {
+  darItem(target, recorrido=[]) {
     for(var item in this.inventario) {
       if(this.inventario[item] > 0 && target.invAcept.includes(item)) {
-        this.inventario[item] -= 1;
-        target.añadirItem(item, 1);
+        var cant = 1;
+        this.inventario[item] -= cant;
+
+        if(recorrido.length > 1) {
+          recorrido.reverse();
+          this.animacionItem(target, item, cant, recorrido)
+        } else {
+          target.añadirItem(item, cant);
+        }
+
         return true;
       }
     }
@@ -84,5 +92,33 @@ class Maquina {
       this.inventario[item] = 0;
     }
     this.inventario[item] += cant;
+  }
+
+  animacionItem(target, item, cant, recorrido, index=0, sprite=false) {
+    var self = this;
+    var x = this.getCoordX(recorrido[index].coords[0].x);
+    var y = this.getCoordY(recorrido[index].coords[0].y);
+    var targetX = this.getCoordX(recorrido[index+1].coords[0].x);
+    var targetY = this.getCoordY(recorrido[index+1].coords[0].y);
+
+    if(!sprite) {
+      sprite = this.scene.add.sprite(x, y, 'terreno', 'cestaTransporteVertical').setOrigin(0,0);
+    }
+
+    this.scene.tweens.add({
+      targets:sprite,
+      duration: recorrido[index].velocidad * 4,
+      delay: recorrido[index].velocidad * 0.5,
+      x: targetX,
+      y: targetY,
+      onComplete: function() {
+        if(recorrido.length < index+1) {
+          self.animacionItem(target, item, cant, recorrido, index+1, sprite);
+        } else {
+          target.añadirItem(item, cant);
+          sprite.destroy();
+        }
+      }
+    })
   }
 }

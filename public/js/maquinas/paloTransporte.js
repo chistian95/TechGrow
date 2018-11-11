@@ -16,12 +16,14 @@ class PaloTransporte extends Maquina {
     this.ajustarInputs();
   }
 
-  darItem(target) {
+  darItem(target, recorrido=[]) {
+    recorrido = recorrido.slice(0);
+    recorrido.push(this);
+
     var dirs = _.shuffle([0,1,2,3]);
     for(var d in dirs) {
       var dir = dirs[d];
-      if(this.extraerItem(this.coords[0], dir, target)) {
-        
+      if(this.extraerItem(this.coords[0], dir, target, recorrido)) {
         return true;
       }
     }
@@ -32,22 +34,22 @@ class PaloTransporte extends Maquina {
 
       if(enlace.coords[0].y == this.coords[0].y) { //horizontal
         if(enlace.coords[0].x < this.coords[0].x) { //oeste
-          if(this.coords[0].inputs[3] == INPUT.In && enlace.coords[0].inputs[1] == INPUT.Out && enlace.darItem(target)) {
-            return true;
+          if(this.coords[0].inputs[3] == INPUT.In && enlace.coords[0].inputs[1] == INPUT.Out) {
+             enlace.darItem(target, recorrido);
           }
         } else { //este
-          if(this.coords[0].inputs[1] == INPUT.In && enlace.coords[0].inputs[3] == INPUT.Out && enlace.darItem(target)) {
-            return true;
+          if(this.coords[0].inputs[1] == INPUT.In && enlace.coords[0].inputs[3] == INPUT.Out) {
+            enlace.darItem(target, recorrido);
           }
         }
       } else { //vertical
         if(enlace.coords[0].y < this.coords[0].y) { //norte
-          if(this.coords[0].inputs[0] == INPUT.In && enlace.coords[0].inputs[2] == INPUT.Out && enlace.darItem(target)) {
-            return true;
+          if(this.coords[0].inputs[0] == INPUT.In && enlace.coords[0].inputs[2] == INPUT.Out) {
+            enlace.darItem(target, recorrido);
           }
         } else { //sur
-          if(this.coords[0].inputs[2] == INPUT.In && enlace.coords[0].inputs[0] == INPUT.Out && enlace.darItem(target)) {
-            return true;
+          if(this.coords[0].inputs[2] == INPUT.In && enlace.coords[0].inputs[0] == INPUT.Out) {
+            enlace.darItem(target, recorrido);
           }
         }
       }
