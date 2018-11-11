@@ -104,6 +104,11 @@ class Maquina {
     if(!sprite) {
       sprite = this.scene.add.sprite(x, y, 'terreno', 'cestaTransporteVertical').setOrigin(0,0);
     }
+    if(recorrido[index].coords[0].x == recorrido[index+1].coords[0].x) {
+      sprite.setFrame('cestaTransporteVertical');
+    } else {
+      sprite.setFrame('cestaTransporte');
+    }
 
     this.scene.tweens.add({
       targets:sprite,
