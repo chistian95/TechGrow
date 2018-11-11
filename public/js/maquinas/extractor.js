@@ -4,7 +4,7 @@ class Extractor extends Maquina {
 
     this.subtipo = 'extractor';
     this.interfaz = 'hud_infoMaquinaExtractor';
-    this.inputs = [1,1,1,1];
+    this.coords[0].inputs = [INPUT.Out,INPUT.Out,INPUT.Out,INPUT.Out];
   }
 
   postInit() {

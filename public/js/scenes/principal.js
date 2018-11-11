@@ -140,26 +140,8 @@ class ScenePrincipal extends Phaser.Scene {
 
     PaloTransporte.crearTransporte([0,7], [0,1], this);
     PaloTransporte.crearTransporte([4,-1],[-1,-1], this);
-    /*
-    new PaloTransporte(0, 7, this);
-    new PaloTransporte(0, 1, this);
-    new PaloTransporte(4, -1, this);
-    new PaloTransporte(-1, -4, this);
-    new PaloTransporte(-1, -1, this);
-    new PaloTransporte(-5, -1, this);
-    for(var i=-3; i<-1; i++) {
-      new CorreaTransporte(-1, i, this, 'vertical');
-    }
-    for(var i=-4; i<-1; i++) {
-      new CorreaTransporte(i, -1, this, 'horizontal');
-    }
-    for(var i=0; i<4; i++) {
-      new CorreaTransporte(i, -1, this, 'horizontal');
-    }
-    for(var i=2; i<7; i++) {
-      new CorreaTransporte(0, i, this, 'vertical');
-    }
-    */
+    PaloTransporte.crearTransporte([-5,-1],[-1,-1], this);
+    PaloTransporte.crearTransporte([-1,-4],[-1,-1], this);
   }
 
   crearCamara() {

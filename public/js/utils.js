@@ -16,3 +16,9 @@ var RECURSO = {
     puntosMax: 0,
   }
 }
+
+var INPUT = {
+  Off: 0,
+  Out: 1,
+  In: 2
+}

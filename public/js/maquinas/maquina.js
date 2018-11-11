@@ -1,14 +1,13 @@
 class Maquina {
   constructor(x, y, scene, orientacion='horizontal') {
     this.activa = true;
-    this.coords = [{x: x, y: y}];
+    this.coords = [{x: x, y: y, inputs: [INPUT.Off, INPUT.Off, INPUT.Off, INPUT.Off]}];
     this.inventario = {};
     this.invAcept = [];
     this.interfaz = 'hud_infoMaquinaGenerico';
     this.velocidad = 1000;
     this.eficiencia = 1;
     this.scene = scene;
-    this.inputs = [2,2,2,2];
 
     scene.tilesMundo[x+","+y].maquina = this;
   }
@@ -31,5 +30,59 @@ class Maquina {
   }
   getCoordY(y) {
     return y * 32 - 16;
+  }
+
+  extraerItem(coord, dir, destino=this) {
+    var maquina;
+    if(dir == 0) {
+      maquina = this.scene.tilesMundo[coord.x+","+(coord.y-1)].maquina;
+      if(!maquina || _.isEmpty(maquina) || maquina == this || maquina.coords[0].inputs[2] != INPUT.Out) {
+        maquina = false;
+      }
+    } else if(dir == 1) {
+      maquina = this.scene.tilesMundo[(coord.x+1)+","+coord.y].maquina;
+      if(!maquina || _.isEmpty(maquina) || maquina == this || maquina.coords[0].inputs[3] != INPUT.Out) {
+        maquina = false;
+      }
+    } else if(dir == 2) {
+      maquina = this.scene.tilesMundo[coord.x+","+(coord.y+1)].maquina;
+      if(!maquina || _.isEmpty(maquina) || maquina == this || maquina.coords[0].inputs[0] != INPUT.Out) {
+        maquina = false;
+      }
+    } else if(dir == 3) {
+      maquina = this.scene.tilesMundo[(coord.x-1)+","+coord.y].maquina;
+      if(!maquina || _.isEmpty(maquina) || maquina == this || maquina.coords[0].inputs[1] != INPUT.Out) {
+        maquina = false;
+      }
+    }
+
+    if(!maquina) {
+      return false;
+    }
+
+    if(maquina.darItem(destino)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  darItem(target) {
+    for(var item in this.inventario) {
+      if(this.inventario[item] > 0 && target.invAcept.includes(item)) {
+        this.inventario[item] -= 1;
+        target.añadirItem(item, 1);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  añadirItem(item, cant=1) {
+    if(!this.inventario[item]) {
+      this.inventario[item] = 0;
+    }
+    this.inventario[item] += cant;
   }
 }

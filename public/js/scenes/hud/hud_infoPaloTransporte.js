@@ -32,7 +32,7 @@ class HUD_InfoPaloTransporte extends Phaser.Scene {
       self.nombreMaquina.setText(self.maquina.nombre);
 
       for(var i=0; i<self.spritesInputs.length; i++) {
-        var dir = self.maquina.inputs[i];
+        var dir = self.maquina.coords[0].inputs[i];
         var frame = "";
         switch(dir) {
           case 0: frame = "inputOff"; break;
@@ -73,11 +73,11 @@ class HUD_InfoPaloTransporte extends Phaser.Scene {
 
         this.spritesInputs[i].on('pointerdown', function(event) {
           var dir = this.data.get('dir');
-          var statInput = self.maquina.inputs[dir];
+          var statInput = self.maquina.coords[0].inputs[dir];
 
           statInput++;
           if(statInput > 2) { statInput = 0; }
-          self.maquina.inputs[dir] = statInput;
+          self.maquina.coords[0].inputs[dir] = statInput;
 
           switch(statInput) {
             case 0: this.setFrame('inputOff'); break;

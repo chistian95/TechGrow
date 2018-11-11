@@ -8,160 +8,49 @@ class PaloTransporte extends Maquina {
     this.subtipo = 'paloTransporte';
     this.interfaz = 'hud_infoPaloTransporte';
     this.invAcept = ['TODO'];
-    this.inputs = [0,0,0,0];
+    this.coords[0].inputs = [INPUT.Off, INPUT.Off, INPUT.Off, INPUT.Off];
     this.enlaces = [];
     this.activa = false;
-    this.item = false;
 
     this.postInit();
     this.ajustarInputs();
   }
 
-  postInit() {
-    super.postInit();
-
-    this.scene.time.addEvent({delay: this.velocidad, callback: this.onTick, callbackScope: this, loop: true});
-  }
-
-  onTick() {
+  darItem(target) {
     var dirs = _.shuffle([0,1,2,3]);
-
-    for(var i=0; i<dirs.length; i++) {
-      var dir = dirs[i];
-      if(this.inputs[dir] == 2 && this.cogerItem(dir)) {
-        return;
-      } else if(this.inputs[dir] == 1 && this.enviarItem(dir)) {
-        return;
+    for(var d in dirs) {
+      var dir = dirs[d];
+      if(this.extraerItem(this.coords[0], dir, target)) {
+        
+        return true;
       }
     }
 
     var enlaces = _.shuffle(this.enlaces);
-    for(var i=0; i<enlaces.length; i++) {
-      var enlace = enlaces[i];
-      if(enlace.item) {
-        continue;
-      }
+    for(var en in enlaces) {
+      var enlace = enlaces[en];
 
       if(enlace.coords[0].y == this.coords[0].y) { //horizontal
         if(enlace.coords[0].x < this.coords[0].x) { //oeste
-          if(this.inputs[3] == 1 && enlace.inputs[1] == 2) {
-            enlace.item = this.item;
-            this.item = false;
-            return;
+          if(this.coords[0].inputs[3] == INPUT.In && enlace.coords[0].inputs[1] == INPUT.Out && enlace.darItem(target)) {
+            return true;
           }
         } else { //este
-          if(this.inputs[1] == 1 && enlace.inputs[3] == 2) {
-            enlace.item = this.item;
-            this.item = false;
-            return;
+          if(this.coords[0].inputs[1] == INPUT.In && enlace.coords[0].inputs[3] == INPUT.Out && enlace.darItem(target)) {
+            return true;
           }
         }
-      } else if(enlace.coords[0].x == this.coords[0].x) { //vertical
-        if(enlace.coords[0].y < this.coords[0].y) { //sur
-          if(this.inputs[0] == 1 && enlace.inputs[2] == 2) {
-            enlace.item = this.item;
-            this.item = false;
-            return;
+      } else { //vertical
+        if(enlace.coords[0].y < this.coords[0].y) { //norte
+          if(this.coords[0].inputs[0] == INPUT.In && enlace.coords[0].inputs[2] == INPUT.Out && enlace.darItem(target)) {
+            return true;
           }
-        } else { //norte
-          if(this.inputs[2] == 1 && enlace.inputs[0] == 2) {
-            enlace.item = this.item;
-            this.item = false;
-            return;
+        } else { //sur
+          if(this.coords[0].inputs[2] == INPUT.In && enlace.coords[0].inputs[0] == INPUT.Out && enlace.darItem(target)) {
+            return true;
           }
         }
       }
-    }
-  }
-
-  cogerItem(dir) {
-    if(this.item) {
-      return false;
-    }
-
-    var maquina;
-    var x = this.coords[0].x;
-    var y = this.coords[0].y;
-    if(dir == 0) {
-      maquina = this.scene.tilesMundo[x+","+(y-1)].maquina;
-    } else if(dir == 1) {
-      maquina = this.scene.tilesMundo[(x+1)+","+y].maquina;
-    } else if(dir == 2) {
-      maquina = this.scene.tilesMundo[x+","+(y+1)].maquina;
-    } else if(dir == 3) {
-      maquina = this.scene.tilesMundo[(x-1)+","+y].maquina;
-    }
-
-    if(!maquina || _.isEmpty(maquina)) {
-      return false;
-    }
-
-    var item;
-    for(var i in maquina.inventario) {
-      if(maquina.inventario[i] > 0) {
-        item = i;
-        maquina.inventario[i]--;
-        break;
-      }
-    }
-
-    if(!item) {
-      return false;
-    }
-
-    this.item = item;
-
-    return true;
-  }
-
-  enviarItem(dir) {
-    if(!this.item) {
-      return false;
-    }
-
-    var maquina;
-    var x = this.coords[0].x;
-    var y = this.coords[0].y;
-    if(dir == 0) {
-      maquina = this.scene.tilesMundo[x+","+(y-1)].maquina;
-    } else if(dir == 1) {
-      maquina = this.scene.tilesMundo[(x+1)+","+y].maquina;
-    } else if(dir == 2) {
-      maquina = this.scene.tilesMundo[x+","+(y+1)].maquina;
-    } else if(dir == 3) {
-      maquina = this.scene.tilesMundo[(x-1)+","+y].maquina;
-    }
-
-    if(!maquina || _.isEmpty(maquina)) {
-      return false;
-    }
-
-    if(!maquina.invAcept.includes(this.item)) {
-      return false;
-    }
-
-    if(maquina.tipo == 'paloTransporte') {
-      if(maquina.item) {
-        return false;
-      }
-
-      maquina.item = this.item;
-      this.item = false;
-      return true;
-    }
-
-    if(!maquina.inventario[this.item]) {
-      maquina.inventario[this.item] = 0;
-    }
-    maquina.inventario[this.item]++;
-    this.item = false;
-
-    return true;
-  }
-
-  enviarItemTransporte(dir, maquina) {
-    if(maquina.tipo == 'paloTransporte') {
-
     }
 
     return false;
@@ -190,28 +79,26 @@ class PaloTransporte extends Maquina {
   }
 
   ajustarInput(target, n) {
-    //off
     if(_.isEmpty(target)) {
-      this.inputs[n] = 0;
+      this.coords[0].inputs[n] = INPUT.Off;
       return;
     }
 
-    //expulsar
     if(target.subtipo == 'casa') {
-      this.inputs[n] = 1;
+      this.coords[0].inputs[n] = INPUT.Out;
       return;
     }
 
-    //recoger
     if(target.subtipo == 'extractor') {
-      this.inputs[n] = 2;
+      this.coords[0].inputs[n] = INPUT.In;
       return;
     }
   }
 
   crearEnlace(palo) {
     for(var p in this.enlaces) {
-      if(p.coords[0].x == palo.coords[0].x && p.coords[0].y == palo.coords[0].y) {
+      var maquina = this.enlaces[p];
+      if(maquina.coords[0].x == palo.coords[0].x && maquina.coords[0].y == palo.coords[0].y) {
         return;
       }
     }
@@ -225,8 +112,22 @@ class PaloTransporte extends Maquina {
       return;
     }
 
-    var palo1 = new PaloTransporte(c1[0], c1[1], scene);
-    var palo2 = new PaloTransporte(c2[0], c2[1], scene);
+    var palo1;
+    var palo2;
+
+    if(!_.isEmpty(scene.tilesMundo[c1[0]+","+c1[1]].maquina) && scene.tilesMundo[c1[0]+","+c1[1]].maquina.tipo == 'paloTransporte') {
+      palo1 = scene.tilesMundo[c1[0]+","+c1[1]].maquina;
+    }
+    if(!_.isEmpty(scene.tilesMundo[c2[0]+","+c2[1]].maquina) && scene.tilesMundo[c2[0]+","+c2[1]].maquina.tipo == 'paloTransporte') {
+      palo2 = scene.tilesMundo[c2[0]+","+c2[1]].maquina;
+    }
+
+    if(!palo1) {
+      palo1 = new PaloTransporte(c1[0], c1[1], scene);
+    }
+    if(!palo2) {
+      palo2 = new PaloTransporte(c2[0], c2[1], scene);
+    }
     palo1.crearEnlace(palo2);
     palo2.crearEnlace(palo1);
 
@@ -236,14 +137,14 @@ class PaloTransporte extends Maquina {
         p1 = c1;
         p2 = c2;
 
-        palo1.inputs[2] = 1;
-        palo2.inputs[0] = 2;
+        palo1.coords[0].inputs[2] = INPUT.Out;
+        palo2.coords[0].inputs[0] = INPUT.In;
       } else { //sur
         p1 = c2;
         p2 = c1;
 
-        palo1.inputs[0] = 1;
-        palo2.inputs[2] = 2;
+        palo1.coords[0].inputs[0] = INPUT.Out;
+        palo2.coords[0].inputs[2] = INPUT.In;
       }
 
       for(var y=p1[1]+1; y<p2[1]; y++) {
@@ -255,14 +156,14 @@ class PaloTransporte extends Maquina {
         p1 = c1;
         p2 = c2;
 
-        palo1.inputs[1] = 1;
-        palo2.inputs[3] = 2;
+        palo1.coords[0].inputs[1] = INPUT.Out;
+        palo2.coords[0].inputs[3] = INPUT.In;
       } else { //oeste
         p1 = c2;
         p2 = c1;
 
-        palo1.inputs[3] = 1;
-        palo2.inputs[1] = 2;
+        palo1.coords[0].inputs[3] = INPUT.Out;
+        palo2.coords[0].inputs[1] = INPUT.In;
       }
 
       for(var x=p1[0]+1; x<p2[0]; x++) {

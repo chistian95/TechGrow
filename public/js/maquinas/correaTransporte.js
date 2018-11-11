@@ -12,7 +12,6 @@ class CorreaTransporte extends Maquina {
     this.subtipo = 'transporte';
     this.velocidad = 1000;
     this.orientacion = orientacion;
-    this.inputs = [0,0,0,0];
 
     if(this.orientacion == 'horizontal') {
       var coords = this.coords[0];
