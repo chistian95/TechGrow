@@ -133,6 +133,7 @@ class ScenePrincipal extends Phaser.Scene {
     new Casa(-1, 0, this);
     new PicaPiedra(5, -1, this);
     new PicaPiedra(4, 0, this);
+    new PicaPiedra(8, -4, this);
     new HornoPiedra(-2, 0, this);
     new TaladoraBasica(-1, -5, this);
     new TaladoraBasica(-6, -1, this);
@@ -142,6 +143,7 @@ class ScenePrincipal extends Phaser.Scene {
     PaloTransporte.crearTransporte([4,-1],[-1,-1], this);
     PaloTransporte.crearTransporte([-5,-1],[-1,-1], this);
     PaloTransporte.crearTransporte([-1,-4],[-1,-1], this);
+    PaloTransporte.crearTransporte([7,-4],[-1,-4], this);
   }
 
   crearCamara() {

@@ -24,7 +24,7 @@ class PaloTransporte extends Maquina {
     for(var d in dirs) {
       var dir = dirs[d];
       if(this.extraerItem(this.coords[0], dir, target, recorrido)) {
-        return true;
+        break;
       }
     }
 
@@ -196,7 +196,7 @@ class PaloTransporte extends Maquina {
       }
 
       for(var y=p1[1]; y<p2[1]; y++) {
-        if(!_.isEmpty(scene.tilesMundo[p1[0]+","+y].maquina)) {
+        if(!_.isEmpty(scene.tilesMundo[p1[0]+","+y].maquina) && scene.tilesMundo[p1[0]+","+y].maquina.tipo != 'paloTransporte') {
           return false;
         }
       }
@@ -211,7 +211,7 @@ class PaloTransporte extends Maquina {
       }
 
       for(var x=p1[0]; x<p2[0]; x++) {
-        if(!_.isEmpty(scene.tilesMundo[x+","+p1[1]].maquina)) {
+        if(!_.isEmpty(scene.tilesMundo[x+","+p1[1]].maquina) && scene.tilesMundo[x+","+p1[1]].maquina.tipo != 'paloTransporte') {
           return false;
         }
       }

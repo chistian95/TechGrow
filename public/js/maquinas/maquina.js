@@ -33,6 +33,7 @@ class Maquina {
   }
 
   extraerItem(coord, dir, destino=this, recorrido=[]) {
+    recorrido = recorrido.slice(0);
     var maquina;
     if(dir == 0) {
       maquina = this.scene.tilesMundo[coord.x+","+(coord.y-1)].maquina;
@@ -110,14 +111,15 @@ class Maquina {
       sprite.setFrame('cestaTransporte');
     }
 
+    var distancia = Math.sqrt(Math.pow(x-targetX,2)+Math.pow(y-targetY,2)) * 0.025;
+
     this.scene.tweens.add({
       targets:sprite,
-      duration: recorrido[index].velocidad * 4,
-      delay: recorrido[index].velocidad * 0.5,
+      duration: recorrido[index].velocidad * distancia,
       x: targetX,
       y: targetY,
       onComplete: function() {
-        if(recorrido.length < index+1) {
+        if(recorrido.length > index+2) {
           self.animacionItem(target, item, cant, recorrido, index+1, sprite);
         } else {
           target.añadirItem(item, cant);
